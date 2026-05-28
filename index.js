@@ -31,20 +31,21 @@ const ALLOWED_ORIGINS = [
   "https://krishnapathak.com",
   "https://www.krishnapathak.com",
   "https://wealthfino-info.vercel.app",
-  // Local web frontend (Vite default)
-  "http://localhost:5173",
-  // Expo web renderer (runs on 8081 by default)
-  "http://localhost:8081",
-  "http://localhost:8000",
   // Allow any extra origin set via env (e.g. on Vercel preview deployments)
   ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
 ];
+
+// Allow ALL localhost origins in development (any port: 5173, 8000, 8081, etc.)
+const LOCALHOST_REGEX = /^http:\/\/localhost(:\d+)?$/;
 
 app.use(
   cors({
     origin: (origin, callback) => {
       // Native mobile apps (iOS/Android) don't send an Origin header — allow them
       if (!origin) return callback(null, true);
+      // Allow any localhost origin (dev servers, Expo web, etc.)
+      if (LOCALHOST_REGEX.test(origin)) return callback(null, true);
+      // Allow explicit production origins
       if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
       callback(new Error(`CORS: origin '${origin}' is not allowed`));
     },
