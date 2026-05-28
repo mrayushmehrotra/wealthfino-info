@@ -35,8 +35,7 @@ const ALLOWED_ORIGINS = [
   "http://localhost:5173",
   // Expo web renderer (runs on 8081 by default)
   "http://localhost:8081",
-  "http://localhost:8082",
-  "http://localhost:19006",
+  "http://localhost:8000",
   // Allow any extra origin set via env (e.g. on Vercel preview deployments)
   ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
 ];
