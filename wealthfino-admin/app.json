@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "WealthFino Admin",
+    "slug": "wealthfino-admin",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#080810"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.wealthfino.admin"
+    },
+    "android": {
+      "package": "com.wealthfino.admin",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#080810"
+      }
+    },
+    "web": {
+      "favicon": "./assets/icon.png",
+      "bundler": "metro",
+      "output": "single",
+      "name": "WealthFino Admin"
+    }
+  }
+}

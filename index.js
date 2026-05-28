@@ -55,7 +55,7 @@ app.use(
 );
 
 // 4. Payload Size Limit
-app.use(express.json({ limit: "10kb" }));
+app.use(express.json({ limit: "1mb" }));
 
 // MongoDB Connection
 const MONGO_URI =
