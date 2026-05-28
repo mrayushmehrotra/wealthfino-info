@@ -25,6 +25,13 @@ const limiter = rateLimit({
 });
 app.use("/api", limiter);
 
+// Prevent browser/CDN from caching API responses.
+// Cached responses carry stale CORS headers and cause false CORS errors (304 Not Modified).
+app.use("/api", (req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
+
 // 3. CORS Configuration
 const ALLOWED_ORIGINS = [
   // Production web frontend
