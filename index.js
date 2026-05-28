@@ -26,12 +26,29 @@ const limiter = rateLimit({
 app.use("/api", limiter);
 
 // 3. CORS Configuration
+const ALLOWED_ORIGINS = [
+  // Production web frontend
+  "https://krishnapathak.com",
+  "https://www.krishnapathak.com",
+  "https://wealthfino-info.vercel.app",
+  // Local web frontend (Vite default)
+  "http://localhost:5173",
+  // Expo web renderer (runs on 8081 by default)
+  "http://localhost:8081",
+  "http://localhost:8082",
+  "http://localhost:19006",
+  // Allow any extra origin set via env (e.g. on Vercel preview deployments)
+  ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
+];
+
 app.use(
   cors({
-    origin:
-      process.env.FRONTEND_URL ||
-      "http://localhost:5173" ||
-      "https://krishnapathak.com/", // Allow frontend domain in production
+    origin: (origin, callback) => {
+      // Native mobile apps (iOS/Android) don't send an Origin header — allow them
+      if (!origin) return callback(null, true);
+      if (ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
+      callback(new Error(`CORS: origin '${origin}' is not allowed`));
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
