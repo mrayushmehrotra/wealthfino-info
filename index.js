@@ -7,6 +7,11 @@ const rateLimit = require("express-rate-limit");
 
 const app = express();
 
+// Trust the first proxy hop (Vercel's load balancer)
+// This allows Express to correctly read the real client IP from
+// the X-Forwarded-For header injected by Vercel's infrastructure.
+app.set("trust proxy", 1);
+
 // 1. Security Headers
 app.use(helmet());
 
@@ -15,6 +20,8 @@ const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
   message: "Too many requests from this IP, please try again later.",
+  // Suppress validation warnings — trust proxy is correctly configured above
+  validate: { xForwardedForHeader: false },
 });
 app.use("/api", limiter);
 
