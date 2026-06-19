@@ -4,7 +4,7 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  TouchableOpacity,
+  Platform,
 } from 'react-native';
 import { Colors } from '../theme/colors';
 
@@ -32,6 +32,7 @@ export default function EditableField({
         placeholder={placeholder || `Enter ${label}`}
         placeholderTextColor={Colors.textPlaceholder}
         textAlignVertical={multiline ? 'top' : 'center'}
+        selectionColor={Colors.primary}
       />
     </View>
   );
@@ -53,12 +54,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.bgInput,
     borderWidth: 1,
     borderColor: Colors.border,
-    borderRadius: 10,
+    borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 10,
     fontSize: 14,
     color: Colors.textPrimary,
-    fontFamily: 'monospace',
+    fontFamily: Platform.select({ ios: 'Courier', android: 'monospace', default: 'monospace' }),
   },
   multiline: {
     minHeight: 90,

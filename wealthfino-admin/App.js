@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, Text, View, Platform } from 'react-native';
+import { StatusBar, Text, View, Platform, Pressable, Linking, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -10,6 +10,7 @@ import Toast from 'react-native-toast-message';
 
 import ComplaintsScreen from './src/screens/ComplaintsScreen';
 import ConsentScreen from './src/screens/ConsentScreen';
+import TradeCardsScreen from './src/screens/TradeCardsScreen';
 import { Colors } from './src/theme/colors';
 
 // Enable native screens on iOS/Android only — web doesn't support react-native-screens
@@ -23,14 +24,14 @@ const queryClient = new QueryClient({
   },
 });
 
-/** Pill-shaped tab icon with emoji + active highlight */
-function TabIcon({ emoji, focused }) {
+/** Minimal tab badge that keeps the UI restrained and readable. */
+function TabIcon({ label, focused }) {
   return (
     <View
       style={{
         width: 36,
         height: 28,
-        borderRadius: 8,
+        borderRadius: 999,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: focused ? Colors.primaryGlow : 'transparent',
@@ -38,8 +39,31 @@ function TabIcon({ emoji, focused }) {
         borderColor: Colors.primaryDim,
       }}
     >
-      <Text style={{ fontSize: 16 }}>{emoji}</Text>
+      <Text style={{ fontSize: 11, fontWeight: '800', color: focused ? Colors.primary : Colors.tabInactive, letterSpacing: 0.6 }}>
+        {label}
+      </Text>
     </View>
+  );
+}
+
+function WhatsAppButton() {
+  const handlePress = async () => {
+    const url = 'https://wa.me/919883455700';
+    const canOpen = await Linking.canOpenURL(url);
+    if (canOpen) {
+      await Linking.openURL(url);
+    }
+  };
+
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Contact us on WhatsApp"
+      onPress={handlePress}
+      style={styles.whatsappButton}
+    >
+      <Text style={styles.whatsappIcon}>WA</Text>
+    </Pressable>
   );
 }
 
@@ -78,9 +102,9 @@ export default function App() {
                   backgroundColor: Colors.bgCard,
                   borderTopColor: Colors.border,
                   borderTopWidth: 1,
-                  height: 64,
+                  height: 68,
                   paddingBottom: 10,
-                  paddingTop: 6,
+                  paddingTop: 8,
                 },
                 tabBarActiveTintColor: Colors.primary,
                 tabBarInactiveTintColor: Colors.tabInactive,
@@ -97,7 +121,17 @@ export default function App() {
                 options={{
                   tabBarLabel: 'Complaints',
                   tabBarIcon: ({ focused }) => (
-                    <TabIcon emoji="📋" focused={focused} />
+                    <TabIcon label="CR" focused={focused} />
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="TradeCards"
+                component={TradeCardsScreen}
+                options={{
+                  tabBarLabel: 'Trade Cards',
+                  tabBarIcon: ({ focused }) => (
+                    <TabIcon label="TC" focused={focused} />
                   ),
                 }}
               />
@@ -107,7 +141,7 @@ export default function App() {
                 options={{
                   tabBarLabel: 'Client Consent',
                   tabBarIcon: ({ focused }) => (
-                    <TabIcon emoji="📄" focused={focused} />
+                    <TabIcon label="CC" focused={focused} />
                   ),
                 }}
               />
@@ -116,8 +150,36 @@ export default function App() {
 
           {/* Global toast notifications */}
           <Toast />
+
+          <WhatsAppButton />
         </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }
+
+const styles = StyleSheet.create({
+  whatsappButton: {
+    position: 'absolute',
+    right: 16,
+    bottom: 86,
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: '#25D366',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.28,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 6,
+    zIndex: 50,
+  },
+  whatsappIcon: {
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: '800',
+    letterSpacing: 0.6,
+  },
+});

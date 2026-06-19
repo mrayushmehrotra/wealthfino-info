@@ -151,14 +151,20 @@ export default function ConsentScreen() {
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <View style={styles.iconBadge}>
-            <Text style={styles.iconText}>📄</Text>
+            <Text style={styles.iconText}>CC</Text>
           </View>
           <View>
             <Text style={styles.headerTitle}>Client Consent</Text>
-            <Text style={styles.headerSub}>{draft.sections?.length ?? 0} Sections</Text>
+            <Text style={styles.headerSub}>{draft.sections?.length ?? 0} sections. Keep consent language precise and compliant.</Text>
           </View>
         </View>
         {isDirty && <View style={styles.dirtyBadge}><Text style={styles.dirtyText}>Unsaved</Text></View>}
+      </View>
+
+      <View style={styles.notice}>
+        <Text style={styles.noticeText}>
+          This editor should be used to maintain disclosure and consent copy only. Avoid calls to action, return claims, or language that could be read as solicitation.
+        </Text>
       </View>
 
       <ScrollView
@@ -260,14 +266,14 @@ const styles = StyleSheet.create({
   iconBadge: {
     width: 42,
     height: 42,
-    borderRadius: 12,
+    borderRadius: 14,
     backgroundColor: Colors.primaryGlow,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: Colors.primaryDim,
   },
-  iconText: { fontSize: 20 },
+  iconText: { fontSize: 13, fontWeight: '800', color: Colors.primary, letterSpacing: 0.8 },
   headerTitle: { fontSize: 17, fontWeight: '700', color: Colors.textPrimary },
   headerSub: { fontSize: 11, color: Colors.textSecondary, letterSpacing: 0.5 },
   dirtyBadge: {
@@ -282,10 +288,26 @@ const styles = StyleSheet.create({
 
   scroll: { flex: 1 },
   scrollContent: { padding: 14, paddingBottom: 40 },
+  notice: {
+    marginHorizontal: 14,
+    marginTop: 12,
+    marginBottom: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderRadius: 14,
+    backgroundColor: Colors.bgElevated,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  noticeText: {
+    color: Colors.textSecondary,
+    fontSize: 12,
+    lineHeight: 18,
+  },
 
   topCard: {
     backgroundColor: Colors.bgCard,
-    borderRadius: 14,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: Colors.border,
     padding: 14,

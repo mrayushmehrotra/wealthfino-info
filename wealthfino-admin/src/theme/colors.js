@@ -1,23 +1,23 @@
 export const Colors = {
   // Backgrounds
-  bg:          '#0A0A0F',
-  bgCard:      '#111118',
-  bgElevated:  '#1A1A26',
-  bgInput:     '#16161F',
-  bgRow:       '#13131C',
+  bg:          '#08111D',
+  bgCard:      '#0F1A2A',
+  bgElevated:  '#152235',
+  bgInput:     '#101B2B',
+  bgRow:       '#0D1726',
 
   // Brand
-  primary:     '#6C63FF',
-  primaryDim:  '#3D3880',
-  primaryGlow: 'rgba(108,99,255,0.18)',
-  accent:      '#A78BFA',
-  accentDim:   '#5B4FCF',
+  primary:     '#63A7FF',
+  primaryDim:  '#2D5B94',
+  primaryGlow: 'rgba(99,167,255,0.16)',
+  accent:      '#8ED0FF',
+  accentDim:   '#4376B8',
 
   // Text
-  textPrimary:   '#F0EEFF',
-  textSecondary: '#9A96B8',
-  textMuted:     '#5A567A',
-  textPlaceholder:'#3D3A56',
+  textPrimary:   '#F2F7FF',
+  textSecondary: '#A9BDD3',
+  textMuted:     '#6F8399',
+  textPlaceholder:'#4A5C71',
 
   // Semantic
   success:  '#22D3A0',
@@ -26,10 +26,10 @@ export const Colors = {
   info:     '#60A5FA',
 
   // Borders
-  border:       '#1E1D2E',
-  borderFocus:  '#6C63FF',
+  border:       '#1B2A3E',
+  borderFocus:  '#63A7FF',
 
   // Tab bar
-  tabActive:   '#6C63FF',
-  tabInactive: '#3A3850',
+  tabActive:   '#63A7FF',
+  tabInactive: '#587089',
 };

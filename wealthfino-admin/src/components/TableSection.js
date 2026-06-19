@@ -25,6 +25,9 @@ export default function TableSection({ title, rows = [], rowRenderer, onAddRow }
 
       {!collapsed && (
         <View style={styles.body}>
+          <Text style={styles.helper}>
+            Keep these figures factual and source-backed. Avoid promotional copy in disclosure tables.
+          </Text>
           {rows.map((row, idx) => (
             <View key={idx} style={[styles.row, idx < rows.length - 1 && styles.rowDivider]}>
               <Text style={styles.rowIndex}>#{idx + 1}</Text>
@@ -45,11 +48,15 @@ export default function TableSection({ title, rows = [], rowRenderer, onAddRow }
 const styles = StyleSheet.create({
   card: {
     backgroundColor: Colors.bgCard,
-    borderRadius: 14,
+    borderRadius: 16,
     borderWidth: 1,
     borderColor: Colors.border,
     marginBottom: 14,
     overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOpacity: 0.18,
+    shadowRadius: 20,
+    shadowOffset: { width: 0, height: 10 },
   },
   header: {
     flexDirection: 'row',
@@ -84,6 +91,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingBottom: 10,
     paddingTop: 6,
+  },
+  helper: {
+    color: Colors.textSecondary,
+    fontSize: 12,
+    lineHeight: 18,
+    marginBottom: 10,
   },
   row: {
     paddingVertical: 12,

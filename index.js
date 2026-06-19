@@ -115,9 +115,29 @@ const ClientConsentSchema = new mongoose.Schema({
   sections: [{ title: String, content: String }],
 });
 
+const TradeCardSchema = new mongoose.Schema(
+  {
+    badge: String,
+    tag: String,
+    name: String,
+    logo: String,
+    date: String,
+    dateEnd: String,
+    entry: String,
+    sl: String,
+    exit: String,
+    target: String,
+    updates: [String],
+    segment: { type: String, default: "Index Options" },
+    status: { type: String, default: "Active" },
+  },
+  { timestamps: true },
+);
+
 // Models
 const Complaint = mongoose.model("Complaint", ComplaintSchema);
 const ClientConsent = mongoose.model("ClientConsent", ClientConsentSchema);
+const TradeCard = mongoose.model("TradeCard", TradeCardSchema);
 
 // Initial Data Seeding
 const seedDatabase = async () => {
@@ -380,6 +400,58 @@ app.delete("/api/client-consent", async (req, res) => {
   try {
     await ClientConsent.deleteMany({});
     res.json({ message: "Client consent data cleared." });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// API Endpoints for Trade Cards
+app.get("/api/trade-cards", async (req, res) => {
+  try {
+    const cards = await TradeCard.find().sort({ createdAt: -1 });
+    res.json(cards);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get("/api/trade-cards/:id", async (req, res) => {
+  try {
+    const card = await TradeCard.findById(req.params.id);
+    if (!card) return res.status(404).json({ message: "Trade card not found" });
+    res.json(card);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/trade-cards", async (req, res) => {
+  try {
+    const card = new TradeCard(req.body);
+    await card.save();
+    res.status(201).json(card);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.put("/api/trade-cards/:id", async (req, res) => {
+  try {
+    const card = await TradeCard.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    if (!card) return res.status(404).json({ message: "Trade card not found" });
+    res.json(card);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.delete("/api/trade-cards/:id", async (req, res) => {
+  try {
+    const card = await TradeCard.findByIdAndDelete(req.params.id);
+    if (!card) return res.status(404).json({ message: "Trade card not found" });
+    res.json({ message: "Trade card deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

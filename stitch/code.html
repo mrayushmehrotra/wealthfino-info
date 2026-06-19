@@ -1,0 +1,387 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>WealthFino - Trade Recommendations</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "surface-container-low": "#f3f4f5",
+                        "on-background": "#191c1d",
+                        "surface-container-high": "#e7e8e9",
+                        "primary": "#003820",
+                        "tertiary": "#303030",
+                        "on-primary-container": "#84c39b",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#2d6a48",
+                        "on-primary-fixed": "#002111",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-secondary-container": "#6c5000",
+                        "outline-variant": "#c0c9c0",
+                        "on-tertiary-container": "#b6b4b3",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#95d4ac",
+                        "secondary-container": "#fdc003",
+                        "secondary": "#785900",
+                        "outline": "#707971",
+                        "on-secondary-fixed": "#261a00",
+                        "surface-container": "#edeeef",
+                        "secondary-fixed": "#ffdf9e",
+                        "background": "#f8f9fa",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#fabd00",
+                        "inverse-on-surface": "#f0f1f2",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#95d4ac",
+                        "primary-fixed": "#b0f1c7",
+                        "on-secondary-fixed-variant": "#5b4300",
+                        "surface-dim": "#d9dadb",
+                        "on-surface": "#191c1d",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#0f5132",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "tertiary-container": "#474646",
+                        "inverse-surface": "#2e3132",
+                        "on-primary-fixed-variant": "#0f5132",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#404942",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-variant": "#e1e3e4",
+                        "surface-bright": "#f8f9fa",
+                        "surface": "#f8f9fa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "margin-desktop": "48px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "lg": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "label-lg": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "body-sm": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(253, 192, 3, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(253, 192, 3, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(253, 192, 3, 0); }
+        }
+        .btn-premium-pulse {
+            animation: pulse-gold 2s infinite;
+        }
+        
+        .gold-gradient {
+            background: linear-gradient(135deg, #fdc003 0%, #fabd00 100%);
+        }
+    @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }</style>
+</head>
+<body class="bg-surface text-on-surface antialiased pb-[80px]">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-mobile h-16 w-full z-50 bg-surface shadow-sm sticky top-0">
+<div class="flex items-center gap-3">
+<img alt="User Profile" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A clean, professional headshot of a smiling individual in business casual attire against a solid light background. Used as a user profile avatar in a modern fintech application interface. Light mode aesthetic with high clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDm06QHhZj4Hee4NVTG8-88entROOJxgoR5xc24FqVEcHgyHcs_3vXZ1qSYHu7G5MTkxkuID0iHyky8oocxfOnr79ihK9cCTPFr4FB3TvN7WNwgXD5xRRT07ZnSupj6IT5s5uXorNy9OSFE8H-tb8QEaPfuIfIgF6hmMXwMt6N6nAZfXbaCSS7Aj5-DNHgghRYubT_UDzGRrxFtS3KReOn_3zUmo8UY6RiZRNoguS7SfZX6ip0ZSvPwFlaQiwZPcWdnd4m2x5S7Vrvd">
+<div>
+<h1 class="font-headline-sm text-headline-sm-mobile font-bold text-on-surface"><span class="" style="font-size: inherit;">Learn &amp;&nbsp;</span>Trade&nbsp;&nbsp;</h1>
+</div>
+</div>
+<button class="gold-gradient text-on-secondary-fixed font-label-lg text-label-lg px-4 py-2 rounded-full flex items-center gap-1 shadow-sm btn-premium-pulse hover:opacity-80 transition-opacity">
+<span class="">⭐</span> BUY PREMIUM
+        </button>
+</header>
+<main class="w-full max-w-2xl mx-auto flex flex-col gap-md pt-sm">
+<!-- Subtitle -->
+<div class="px-margin-mobile">
+<p class="font-body-sm text-body-sm text-on-surface-variant">SEBI REGISTERED&nbsp; | SEBI REG NO- INH300009914</p>
+</div>
+<!-- Status Filters (Reel) -->
+<div class="w-full overflow-x-auto hide-scrollbar pl-margin-mobile pr-margin-mobile">
+<div class="flex gap-2 w-max pb-2 animate-[ticker-scroll_19s_linear_infinite] hover:[animation-play-state:paused]"><div class="flex gap-2 items-center"><button class="bg-primary text-on-primary font-label-sm text-label-sm px-4 py-2 rounded-full border border-primary flex items-center gap-2">Active <span class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px]">5</span></button><button class="bg-surface-container-highest text-on-surface font-label-sm text-label-sm px-4 py-2 rounded-full border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center gap-2">Target Achieved <span class="bg-primary/10 text-primary px-1.5 py-0.5 rounded-full text-[10px]">10</span></button><button class="bg-surface-container-highest text-on-surface font-label-sm text-label-sm px-4 py-2 rounded-full border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center gap-2">Stop Loss <span class="bg-error/10 text-error px-1.5 py-0.5 rounded-full text-[10px]">3</span></button><button class="bg-surface-container-highest text-on-surface font-label-sm text-label-sm px-4 py-2 rounded-full border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center gap-2">Profit Booked <span class="bg-primary/10 text-primary px-1.5 py-0.5 rounded-full text-[10px]">18</span></button></div><div class="flex gap-2 items-center"><button class="bg-primary text-on-primary font-label-sm text-label-sm px-4 py-2 rounded-full border border-primary flex items-center gap-2">Active <span class="bg-white/20 px-1.5 py-0.5 rounded-full text-[10px]">5</span></button><button class="bg-surface-container-highest text-on-surface font-label-sm text-label-sm px-4 py-2 rounded-full border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center gap-2">Target Achieved <span class="bg-primary/10 text-primary px-1.5 py-0.5 rounded-full text-[10px]">10</span></button><button class="bg-surface-container-highest text-on-surface font-label-sm text-label-sm px-4 py-2 rounded-full border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center gap-2">Stop Loss <span class="bg-error/10 text-error px-1.5 py-0.5 rounded-full text-[10px]">3</span></button><button class="bg-surface-container-highest text-on-surface font-label-sm text-label-sm px-4 py-2 rounded-full border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center gap-2">Profit Booked <span class="bg-primary/10 text-primary px-1.5 py-0.5 rounded-full text-[10px]">18</span></button></div></div>
+</div>
+<!-- Segment Filters (Chips) -->
+<div class="w-full overflow-x-auto hide-scrollbar pl-margin-mobile pr-margin-mobile mt-[-8px]">
+<div class="flex gap-2 w-max pb-2">
+<button class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-3 py-1.5 rounded-md hover:opacity-90 transition-colors border border-outline-variant">Stock Options</button>
+<button class="bg-primary text-on-primary font-label-sm text-label-sm px-3 py-1.5 rounded-md hover:opacity-90 transition-colors border border-primary">Index Options</button>
+<button class="bg-tertiary text-on-tertiary font-label-sm text-label-sm px-3 py-1.5 rounded-md hover:opacity-90 transition-colors border border-outline">Equity</button>
+<button class="font-label-sm text-label-sm px-3 py-1.5 rounded-md hover:opacity-90 transition-colors border border-outline-variant bg-blue-500 text-white">Commodity</button>
+<button class="bg-indigo-50 text-indigo-700 font-label-sm text-label-sm px-3 py-1.5 rounded-md hover:bg-indigo-100 transition-colors border border-indigo-200">Futures</button>
+</div>
+</div>
+<!-- Trade Cards List -->
+<div class="flex flex-col gap-md px-margin-mobile">
+<!-- Card 1: Active NIFTY -->
+<div class="bg-surface-container-lowest rounded-xl shadow-md border border-outline-variant/30 overflow-hidden flex flex-col mb-4"><div class="p-4 flex justify-between items-start relative"><div class="absolute top-0 left-0 bg-primary text-white font-label-sm text-[9px] px-2 py-0.5 rounded-br-lg flex items-center gap-1 font-bold z-10 uppercase tracking-wider gap-1.5"><span class="material-symbols-outlined text-[11px] text-white">verified</span>SEBI REGISTERED</div><div class="absolute top-0 right-0 flex flex-col items-end gap-1 z-10"><div class="bg-secondary-container text-on-secondary-container font-label-sm text-[9px] px-2 py-0.5 rounded-bl-lg flex items-center gap-1 font-bold uppercase tracking-wider">STOCK OPTION</div></div><div class="flex flex-col gap-2"><div class="flex gap-2 mt-2"><span class="bg-[#ea580c] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">NEW TRADE</span><span class="bg-surface-container-high text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded border border-outline-variant/30">Disclaimer</span></div><div class="items-center flex gap-3 mt-2"><div class="size-12 rounded-lg bg-white flex items-center justify-center p-1.5 border border-outline-variant/50 shadow-sm"><img alt="HDFC Bank" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-16JybZ_n9TxN3VBEcT6PODbRshCh05grNqDHOcid_0GmvaNXsWCVieIQBKBNTglAXRuEaqJ_7ZpXwAxStzQPZzEQq4p79vWYJTtgNT5pPieQFlJkvtqcsdZwhvnE0iOxOLtoWuwWAAOVwY7Za5LnnYzdpN2P9SwsIBlkHybXRYVmqkHotH_4mR23Ut3SkvTlUgqxdvwL0zhHG3Z1TDvjuvF1YIJ7NxHeH1Io1_blk_6f-PGeIaIxq8YUt27C481tdJ0IItFS3-Foju8"></div><div><h3 class="font-bold text-[16px] text-on-surface leading-tight">HDFC BANK 1000 CE</h3></div></div></div></div><div class="px-4 py-2"><p class="text-[12px] font-bold text-on-surface-variant mb-4">Trade Journey <span class="float-right bg-primary text-on-primary text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">ACTIVE</span></p><div class="relative px-2"><div class="flex justify-between text-[10px] text-on-surface-variant mb-1"><span class="">24-05-26, 11:15 AM</span><span class="">24-05-26, 03:15 PM</span></div><div class="h-1 w-full bg-green-500 rounded-full relative mb-4"><div class="absolute -top-1 left-0 size-3 rounded-full bg-green-500 border-2 border-white shadow-sm"></div><div class="absolute -top-1 left-1/2 -translate-x-1/2 size-3 rounded-full bg-green-500 border-2 border-white shadow-sm"></div><div class="absolute -top-1 right-0 size-3 rounded-full bg-green-500 border-2 border-white shadow-sm"></div></div><div class="grid grid-cols-3 gap-2 mt-2">
+<div class="flex flex-col items-center justify-center p-2 bg-surface-container-low border border-outline-variant/30 rounded-lg">
+<span class="text-[10px] text-on-surface-variant uppercase font-bold tracking-tight">Entry</span>
+<span class="text-[13px] font-bold text-on-surface">₹430-₹450</span>
+</div>
+<div class="flex flex-col items-center justify-center p-2 bg-error/10 border border-error/20 rounded-lg">
+<span class="text-[10px] text-error uppercase font-bold tracking-tight">Stop Loss</span>
+<span class="text-[13px] font-bold text-error">₹388</span>
+</div>
+<div class="flex flex-col items-center justify-center p-2 bg-primary/10 border border-primary/20 rounded-lg">
+<span class="text-[10px] text-primary uppercase font-bold tracking-tight">Exit Price</span>
+<span class="text-[13px] font-bold text-primary">₹532</span>
+</div>
+</div></div><div class="mt-4 bg-primary py-2 rounded-md text-center"><div class="text-on-primary font-bold text-sm px-4 py-1.5 rounded-full w-fit mx-auto block">Target: ₹633 - ₹753</div></div></div><div class="grid grid-cols-2 gap-3 p-4"><button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 hover:bg-surface-container-high transition-colors relative"><span class="material-symbols-outlined text-primary mb-2">description</span><span class="text-[12px] font-bold text-on-surface">Research Report</span><span class="material-symbols-outlined absolute top-2 right-2 text-[16px] text-primary">arrow_forward</span></button><button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 hover:bg-surface-container-high transition-colors relative"><img alt="VIP Card" class="h-6 w-6 mb-2 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV8rdZp-I_snrXf8XjDWW2Kxh1t2aRbRxyMj3gvMDgbcaUVeMKb-z8skSRSoPq1inm1KiyrcScXa20lN1gYTStDzJZGxZ9Rjc2ZnoOSbE93pgtssAymVtFTD1k2JVntbiysRTAXlklujdd0YRtc4QZFQgxNwIiCQAVtebtS8VRzXAJY61XIlgHhXZMDT0ud2OqhhRNYuEyl5qcEG-FCrbx8K0yXxd6UkSLwfeBnLhrnF2mCdncmkrsBmNZu6vM6l486gwmDbvvN3WYeJA"><span class="text-[12px] font-bold text-on-surface">Alpha Stock Option</span><span class="material-symbols-outlined absolute top-2 right-2 text-[16px] text-primary">arrow_forward</span></button></div><div class="mx-4 mb-4 p-3 bg-primary/10 rounded-xl border border-primary/10 flex flex-col gap-1"><div class="flex items-center gap-2 mb-2"><h4 class="font-label-lg text-label-lg text-on-surface">WealthFino Updates</h4></div><ul class="flex flex-col gap-1.5 ml-1"><li class="flex items-start gap-2 text-body-sm text-on-surface-variant"><span class="mt-1.5 size-1 rounded-full bg-primary flex-shrink-0"></span><span class="">Entry triggered perfectly at ₹108.00</span></li><li class="flex items-start gap-2 text-body-sm text-on-surface-variant"><span class="mt-1.5 size-1 rounded-full bg-primary flex-shrink-0"></span><span class="">Target 1 almost hit, trailing SL to cost</span></li><li class="flex items-start gap-2 text-body-sm text-on-surface-variant"><span class="mt-1.5 size-1 rounded-full bg-primary flex-shrink-0"></span><span class="">Safe traders can book partial profit</span></li></ul></div><div class="p-4 border-t border-outline-variant/20 flex gap-3"><button class="flex-1 bg-[#FFC107] text-on-surface font-bold text-[14px] py-3 rounded-lg">Buy Now</button><div class="flex gap-2"><button class="p-3 rounded-lg border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-[20px]">bookmark</span></button><button class="p-3 rounded-lg border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-[20px]">favorite</span></button></div></div></div><div class="px-0 mb-6">
+<div class="bg-slate-900 rounded-xl border border-yellow-500/30 p-4 shadow-lg relative overflow-hidden"><div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/5 rounded-full blur-3xl -mr-16 -mt-16"></div><div class="absolute bottom-0 left-0 w-24 h-24 bg-blue-500/5 rounded-full blur-3xl -ml-12 -mb-12"></div><div class="relative z-10"><div class="flex justify-between items-start mb-4"><h3 class="text-white font-bold text-[18px] tracking-tight">Past Performance<span class="ml-2 bg-primary text-on-primary text-[9px] font-bold px-2 py-0.5 rounded border border-primary-fixed/20 uppercase tracking-widest inline-flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">verified</span>CA VERIFIED</span></h3></div><div class="flex items-center gap-4 mb-6 p-3 bg-white/5 border border-white/10 rounded-xl backdrop-blur-sm relative overflow-hidden">
+<div class="absolute top-0 right-0">
+<span class="bg-blue-500 text-white text-[8px] font-black px-2 py-0.5 rounded-bl-lg uppercase tracking-widest shadow-sm">VERIFIED</span>
+</div>
+<div class="size-14 rounded-full bg-slate-800 border-2 border-yellow-500/20 flex items-center justify-center overflow-hidden shadow-lg flex-shrink-0">
+<img alt="Krishna Pathak" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzWAg0USYv5PTFx6CqgodfG4XtwqUCJfzp1vqwaCZ5Fp5_8Ne-Ri6_WGTRKBISdkLrnXp-OUZ_MpBf0thGffbbMNw-X2GFs77Gz3P8lTjkRIjpKuLPuM3_gZKheJ5fBlCn5bSnaz6d_QuiZ13r_lcif0vjLX5FVW7y8sE0eL5Qc5aLm7uVYg3kQ1QU_DJMMufoDU-y0fvWXguNHtn--06tVzacoRseRM4FgYMdEjFBlcIxr2nYMSUvRSP2hyeDbOKpBKUblVIxAapt">
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<h4 class="text-white font-bold text-[16px]">WealthFino</h4>
+<span class="material-symbols-outlined text-blue-400 text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<span class="text-yellow-500/90 text-[10px] font-bold uppercase tracking-wider">SEBI Registered Research Analyst</span>
+<span class="text-slate-400 text-[10px]">SEBI Reg No: INH300009914</span>
+</div>
+</div>
+</div><div class="grid grid-cols-3 gap-3 mb-6"><div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center shadow-inner"><span class="text-[9px] text-slate-400 uppercase font-bold mb-2 tracking-tighter">Target Hit</span><div class="flex items-center gap-1 text-yellow-500"><span class="material-symbols-outlined text-[16px] opacity-80">lock</span><span class="text-sm font-black blur-[3px]">999+</span></div></div><div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center shadow-inner"><span class="text-[9px] text-slate-400 uppercase font-bold mb-2 tracking-tighter">Hits / Misses</span><div class="flex items-center gap-1 text-yellow-500"><span class="material-symbols-outlined text-[16px] opacity-80">lock</span><span class="text-sm font-black blur-[3px]">99/1</span></div></div><div class="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-3 flex flex-col items-center justify-center shadow-inner"><span class="text-[9px] text-slate-400 uppercase font-bold mb-2 tracking-tighter">Accuracy</span><div class="flex items-center gap-1 text-yellow-500"><span class="material-symbols-outlined text-[16px] opacity-80">lock</span><span class="text-sm font-black blur-[3px]">95%</span></div></div></div><button class="w-full gold-gradient text-black font-bold text-sm py-3 rounded-xl shadow-[0_4px_20px_rgba(253,192,3,0.3)] uppercase tracking-widest hover:opacity-90 transition-all active:scale-[0.98] flex items-center justify-center gap-2">View TRADE Performance <span class="material-symbols-outlined text-[18px]">trending_up</span></button></div></div></div><div class="bg-surface-container-lowest rounded-xl shadow-md border border-outline-variant/30 overflow-hidden flex flex-col mb-4"><div class="p-4 flex justify-between items-start relative"><div class="absolute top-0 left-0 bg-primary text-white font-label-sm text-[9px] px-2 py-0.5 rounded-br-lg flex items-center gap-1 font-bold z-10 uppercase tracking-wider gap-1.5"><span class="material-symbols-outlined text-[11px] text-white">verified</span>SEBI REGISTERED</div><div class="absolute top-0 right-0 flex flex-col items-end gap-1 z-10"><div class="bg-secondary-container text-on-secondary-container font-label-sm text-[9px] px-2 py-0.5 rounded-bl-lg flex items-center gap-1 font-bold uppercase tracking-wider">STOCK OPTION</div></div><div class="flex flex-col gap-2"><div class="flex gap-2 mt-2"><span class="bg-[#ea580c] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">NEW TRADE</span><span class="bg-surface-container-high text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded border border-outline-variant/30">Disclaimer</span></div><div class="items-center flex gap-3 mt-2"><div class="size-12 rounded-lg bg-white flex items-center justify-center p-1.5 border border-outline-variant/50 shadow-sm"><img alt="TCS" class="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDgzrYv9VSK7LnskkbwvYoGWlIuWtYmNxrs3aMKAeXt-qkLFLs8upmYl4x4hop16j_NUxW3UwYp2rjebEyNNFptgirfzuhtW16dVScgLBpMqvsw5B9dRqPfSJVhDI0uW4ThxcM3GsjPr8h3D7yWi2sTi5X0eHKThollpVjeLGR8e1E8xrc4PL6E1ZuNkDnXNAV_xa5nj5XIQoNVIrQmzN85gNo4C6TXZYvoEtocUVog0B7Mnx6C048Cc3a_Lw_Mdize8Y_hwLmBW_rVLA"></div><div><h3 class="font-bold text-[16px] text-on-surface leading-tight">TCS 3500 CE</h3></div></div></div></div><div class="px-4 py-2"><p class="text-[12px] font-bold text-on-surface-variant mb-4">Trade Journey <span class="float-right bg-primary text-on-primary text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">ACTIVE</span></p><div class="relative px-2"><div class="flex justify-between text-[10px] text-on-surface-variant mb-1"><span class="">24-05-26, 11:15 AM</span><span class="">24-05-26, 03:15 PM</span></div><div class="h-1 w-full bg-green-500 rounded-full relative mb-4"><div class="absolute -top-1 left-0 size-3 rounded-full bg-green-500 border-2 border-white shadow-sm"></div><div class="absolute -top-1 left-1/2 -translate-x-1/2 size-3 rounded-full bg-green-500 border-2 border-white shadow-sm"></div><div class="absolute -top-1 right-0 size-3 rounded-full bg-green-500 border-2 border-white shadow-sm"></div></div><div class="grid grid-cols-3 gap-2 mt-2"><div class="flex flex-col items-center justify-center p-2 bg-surface-container-low border border-outline-variant/30 rounded-lg"><span class="text-[10px] text-on-surface-variant uppercase font-bold tracking-tight">Entry</span><span class="text-[13px] font-bold text-on-surface">₹145-₹150</span></div><div class="flex flex-col items-center justify-center p-2 bg-error/10 border border-error/20 rounded-lg"><span class="text-[10px] text-error uppercase font-bold tracking-tight">Stop Loss</span><span class="text-[13px] font-bold text-error">₹132</span></div><div class="flex flex-col items-center justify-center p-2 bg-primary/10 border border-primary/20 rounded-lg"><span class="text-[10px] text-primary uppercase font-bold tracking-tight">Exit Price</span><span class="text-[13px] font-bold text-primary">-</span></div></div></div><div class="mt-4 bg-primary py-2 rounded-md text-center"><div class="text-on-primary font-bold text-sm px-4 py-1.5 rounded-full w-fit mx-auto block">Target: ₹175 - ₹185</div></div></div><div class="grid grid-cols-2 gap-3 p-4"><button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 hover:bg-surface-container-high transition-colors relative"><span class="material-symbols-outlined text-primary mb-2">description</span><span class="text-[12px] font-bold text-on-surface">Research Report</span><span class="material-symbols-outlined absolute top-2 right-2 text-[16px] text-primary">arrow_forward</span></button><button class="flex flex-col items-center justify-center p-4 rounded-xl bg-surface-container-low border border-outline-variant/20 hover:bg-surface-container-high transition-colors relative"><img alt="VIP Card" class="h-6 w-6 mb-2 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV8rdZp-I_snrXf8XjDWW2Kxh1t2aRbRxyMj3gvMDgbcaUVeMKb-z8skSRSoPq1inm1KiyrcScXa20lN1gYTStDzJZGxZ9Rjc2ZnoOSbE93pgtssAymVtFTD1k2JVntbiysRTAXlklujdd0YRtc4QZFQgxNwIiCQAVtebtS8VRzXAJY61XIlgHhXZMDT0ud2OqhhRNYuEyl5qcEG-FCrbx8K0yXxd6UkSLwfeBnLhrnF2mCdncmkrsBmNZu6vM6l486gwmDbvvN3WYeJA"><span class="text-[12px] font-bold text-on-surface">Alpha Stock Option</span><span class="material-symbols-outlined absolute top-2 right-2 text-[16px] text-primary">arrow_forward</span></button></div><div class="mx-4 mb-4 p-3 bg-primary/10 rounded-xl border border-primary/10 flex flex-col gap-1"><div class="flex items-center gap-2 mb-2"><h4 class="font-label-lg text-label-lg text-on-surface">WealthFino Updates</h4></div><ul class="flex flex-col gap-1.5 ml-1"><li class="flex items-start gap-2 text-body-sm text-on-surface-variant"><span class="mt-1.5 size-1 rounded-full bg-primary flex-shrink-0"></span><span class="">Breakout confirmed on 15m chart.</span></li><li class="flex items-start gap-2 text-body-sm text-on-surface-variant"><span class="mt-1.5 size-1 rounded-full bg-primary flex-shrink-0"></span><span class="">Volume increasing with price action.</span></li><li class="flex items-start gap-2 text-body-sm text-on-surface-variant"><span class="mt-1.5 size-1 rounded-full bg-primary flex-shrink-0"></span><span class="">Maintain strict SL below support.</span></li></ul></div><div class="p-4 border-t border-outline-variant/20 flex gap-3"><button class="flex-1 bg-[#FFC107] text-on-surface font-bold text-[14px] py-3 rounded-lg">Buy Now</button><div class="flex gap-2"><button class="p-3 rounded-lg border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-[20px]">bookmark</span></button><button class="p-3 rounded-lg border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors"><span class="material-symbols-outlined text-[20px]">favorite</span></button></div></div></div><div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/50 p-3 overflow-hidden relative mb-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-error font-bold text-[10px] animate-pulse">🔥</span>
+<h3 class="font-label-lg text-[12px] font-bold text-on-surface uppercase tracking-wider">Live Activity</h3>
+</div>
+<div class="h-[60px] overflow-hidden relative">
+<div class="flex flex-col gap-2 animate-[ticker-scroll_15s_linear_infinite] hover:[animation-play-state:paused]">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">person</span>
+<span class="text-[11px] text-on-surface-variant">User unlocked Premium</span>
+</div>
+<span class="text-[9px] text-outline">10 sec ago</span>
+</div>
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">visibility</span>
+<span class="text-[11px] text-on-surface-variant">User viewed a recommendation</span>
+</div>
+<span class="text-[9px] text-outline">2 min ago</span>
+</div>
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">campaign</span>
+<span class="text-[11px] text-on-surface-variant">New recommendation released</span>
+</div>
+<span class="text-[9px] text-outline">5 min ago</span>
+</div>
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary">workspace_premium</span>
+<span class="text-[11px] text-on-surface-variant">User upgraded membership</span>
+</div>
+<span class="text-[9px] text-outline">12 min ago</span>
+</div>
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">analytics</span>
+<span class="text-[11px] text-on-surface-variant">Research update published</span>
+</div>
+<span class="text-[9px] text-outline">15 min ago</span>
+</div>
+<!-- Duplicate for seamless loop -->
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">person</span>
+<span class="text-[11px] text-on-surface-variant">User unlocked Premium</span>
+</div>
+<span class="text-[9px] text-outline">10 sec ago</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Upsell Banner -->
+<div class="w-full rounded-xl overflow-hidden shadow-lg flex flex-col h-[150px]">
+<!-- Top Section (70%) -->
+<div class="h-[70%] bg-gradient-to-br from-[#0f172a] to-[#581c87] relative flex items-center px-4">
+<div class="absolute inset-0 bg-white/5 backdrop-blur-[1px]"></div>
+<div class="relative z-10 flex items-center justify-between w-full">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[28px]">workspace_premium</span>
+</div>
+<h3 class="font-headline-sm text-[16px] font-extrabold text-white tracking-tight uppercase">PREMIUM GROUP</h3>
+</div>
+<!-- Benefits Ticker -->
+<div class="flex flex-col items-end overflow-hidden h-[20px] relative w-[180px]">
+<div class="flex flex-col transition-transform duration-500 ease-in-out" id="premium-ticker-unified" style="transform: translateY(0px);">
+<div class="h-[20px] flex items-center justify-end gap-1 text-white/90 font-label-sm text-[10px] whitespace-nowrap">
+<span class="material-symbols-outlined text-[14px] text-secondary-fixed-dim">check_circle</span> Daily 2-3 Research Recommendations
+          </div>
+<div class="h-[20px] flex items-center justify-end gap-1 text-white/90 font-label-sm text-[10px] whitespace-nowrap">
+<span class="material-symbols-outlined text-[14px] text-secondary-fixed-dim">check_circle</span> SL, Target &amp; Modification Alerts
+          </div>
+<div class="h-[20px] flex items-center justify-end gap-1 text-white/90 font-label-sm text-[10px] whitespace-nowrap">
+<span class="material-symbols-outlined text-[14px] text-secondary-fixed-dim">check_circle</span> Stock, Index &amp; Equity Calls
+          </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Section (30%) -->
+<div class="h-[30%] bg-gradient-to-r from-[#f59e0b] to-[#ea580c] flex items-center justify-between px-4">
+<div class="flex flex-col">
+<span class="font-headline-sm text-[13px] font-extrabold text-white uppercase tracking-wide leading-none">BUY PREMIUM NOW</span>
+<span class="font-label-sm text-[9px] text-white/80">Unlock Premium Research</span>
+</div>
+<button class="bg-white text-[#ea580c] font-bold text-[11px] px-4 py-1 rounded-full shadow-sm hover:bg-surface-container-lowest transition-colors">
+      SUBSCRIBE
+    </button>
+</div>
+<script>
+    (function() {
+      const ticker = document.getElementById('premium-ticker-unified');
+      if (!ticker) return;
+      let index = 0;
+      const count = 3;
+      setInterval(() => {
+        index = (index + 1) % count;
+        ticker.style.transform = `translateY(-${index * 20}px)`;
+      }, 2500);
+    })();
+  </script>
+<div class="px-md pb-md pt-2 flex justify-center"></div></div><div class="w-full flex-shrink-0 bg-slate-900 rounded-[8px] p-3 shadow-md border border-slate-700 flex flex-col relative mb-4">
+<div class="flex justify-between items-start mb-2">
+<div class="flex flex-col">
+<h4 class="text-[14px] font-bold text-white leading-tight">NIFTY 26000 CE</h4>
+<span class="text-[10px] text-slate-400 font-medium">Index Option</span>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-[8px] text-slate-400 font-medium">Updated 2 min ago</span>
+<span class="bg-green-500/20 text-green-400 border border-green-500/30 text-[9px] font-bold px-2 py-0.5 rounded-[4px]">ACTIVE</span>
+</div>
+</div>
+<div class="flex gap-2 mb-3">
+<span class="bg-blue-500/10 text-blue-400 text-[8px] font-bold px-2 py-0.5 rounded border border-blue-500/20">Disclaimer</span>
+<span class="bg-purple-500/10 text-purple-400 text-[8px] font-bold px-2 py-0.5 rounded border border-purple-500/20">Research Report</span>
+</div>
+<div class="text-[10px] text-slate-300 font-medium mb-3 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[12px] text-slate-400">calendar_today</span>
+        13 June 2026 • 10:45 AM
+    </div>
+<div class="flex items-center justify-between gap-2 mb-3 bg-slate-800/50 p-2 rounded-[6px] border border-slate-700/50">
+<div class="flex flex-col items-center flex-1">
+<span class="text-[9px] text-slate-400 uppercase font-bold tracking-wide">Approx Margin</span>
+<div class="flex items-center gap-1 text-slate-300 mt-0.5">
+<span class="text-[11px] font-bold whitespace-nowrap">₹10,000 – ₹12,000</span>
+</div>
+</div>
+<div class="w-[1px] h-6 bg-slate-700"></div>
+<div class="flex flex-col items-center flex-1">
+<span class="text-[9px] text-slate-400 uppercase font-bold tracking-wide">Target</span>
+<div class="flex items-center gap-1 text-green-400 mt-0.5">
+<span class="material-symbols-outlined text-[12px]">lock</span>
+<span class="text-[12px] font-black blur-[3px] select-none">XXX</span>
+</div>
+</div>
+<div class="w-[1px] h-6 bg-slate-700"></div>
+<div class="flex flex-col items-center flex-1">
+<span class="text-[9px] text-slate-400 uppercase font-bold tracking-wide">Stop Loss</span>
+<div class="flex items-center gap-1 text-red-400 mt-0.5">
+<span class="material-symbols-outlined text-[12px]">lock</span>
+<span class="text-[12px] font-black blur-[3px] select-none">XXX</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-gradient-to-r from-yellow-500 to-amber-600 text-slate-900 font-bold text-xs py-2 rounded-[6px] shadow-sm hover:shadow-md transition-shadow flex justify-center items-center gap-1.5 uppercase tracking-wide">
+<span class="material-symbols-outlined text-[14px]">lock_open</span> Unlock Now
+    </button>
+<div class="mt-3 pt-3 border-t border-slate-700/50">
+<div class="flex items-center gap-1.5 mb-2">
+<span class="material-symbols-outlined text-[14px] text-yellow-500">notifications_active</span>
+<span class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">Admin Updates</span>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex gap-2 items-start bg-slate-800/30 p-1.5 rounded-md">
+<div class="size-4 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[10px] text-white">person</span>
+</div>
+<p class="text-[9px] text-slate-300 leading-tight">Trade is now active. Entry triggered perfectly.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: Target Achieved Equity -->
+<div class="w-full rounded-xl overflow-hidden shadow-lg flex flex-col h-[150px]"><div class="h-[70%] bg-gradient-to-br from-[#0f172a] to-[#581c87] relative flex items-center px-4"><div class="absolute inset-0 bg-white/5 backdrop-blur-[1px]"></div><div class="relative z-10 flex items-center justify-between w-full"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.2)]"><span class="material-symbols-outlined text-secondary-fixed-dim text-[28px]">workspace_premium</span></div><h3 class="font-headline-sm text-[16px] font-extrabold text-white tracking-tight uppercase">PREMIUM GROUP</h3></div><div class="flex flex-col items-end overflow-hidden h-[20px] relative w-[180px]"><div class="flex flex-col transition-transform duration-500 ease-in-out"><div class="h-[20px] flex items-center justify-end gap-1 text-white/90 font-label-sm text-[10px] whitespace-nowrap"><span class="material-symbols-outlined text-[14px] text-secondary-fixed-dim">check_circle</span> Stock, Index &amp; Equity Calls</div></div></div></div></div><div class="h-[30%] bg-gradient-to-r from-[#f59e0b] to-[#ea580c] flex items-center justify-between px-4"><div class="flex flex-col"><span class="font-headline-sm text-[13px] font-extrabold text-white uppercase tracking-wide leading-none">BUY PREMIUM NOW</span><span class="font-label-sm text-[9px] text-white/80">Unlock Premium Research</span></div><button class="bg-white text-[#ea580c] font-bold text-[11px] px-4 py-1 rounded-full shadow-sm hover:bg-surface-container-lowest transition-colors">SUBSCRIBE</button></div></div>
+<div class="h-8"><div class="px-md pb-md pt-2 flex justify-center"></div></div><div class="bg-surface-container-lowest rounded-xl shadow-md border border-outline-variant overflow-hidden relative border-outline/30 bg-indigo-50/30 border-primary/10 shadow-lg"><div class="absolute top-0 right-0 bg-secondary-container text-on-secondary-container font-label-sm text-[10px] px-3 py-1 rounded-bl-lg font-bold">Index Option</div></div> <!-- Spacer for bottom nav -->
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-xs py-sm bg-surface-container-lowest border-t border-outline-variant shadow-lg md:hidden rounded-t-xl">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-lg">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="font-label-sm text-[10px] mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<span class="font-label-sm text-[10px] mt-1 font-bold">Trades</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-lg">
+<span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+<span class="font-label-sm text-[10px] mt-1">Portfolio</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-lg">
+<span class="material-symbols-outlined text-[24px]">analytics</span>
+<span class="font-label-sm text-[10px] mt-1">Research</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-lg">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="font-label-sm text-[10px] mt-1">Profile</span>
+</button>
+</nav>
+
+
+</body></html>

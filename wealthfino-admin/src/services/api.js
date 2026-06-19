@@ -39,4 +39,25 @@ export const updateClientConsent = async (payload) => {
   return data;
 };
 
+// ─── Trade Cards ────────────────────────────────────────────
+export const fetchTradeCards = async () => {
+  const { data } = await api.get('/api/trade-cards');
+  return data;
+};
+
+export const createTradeCard = async (payload) => {
+  const { data } = await api.post('/api/trade-cards', payload);
+  return data;
+};
+
+export const updateTradeCard = async ({ id, ...payload }) => {
+  const { data } = await api.put(`/api/trade-cards/${id}`, payload);
+  return data;
+};
+
+export const deleteTradeCard = async (id) => {
+  const { data } = await api.delete(`/api/trade-cards/${id}`);
+  return data;
+};
+
 export default api;
