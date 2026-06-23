@@ -1,4 +1,12 @@
 require("dotenv").config();
+const webpush = require("web-push");
+
+// VAPID keys — set these in your .env file
+webpush.setVapidDetails(
+  "mailto:support@wealthfino.com",
+  process.env.VAPID_PUBLIC_KEY || "BATrIjfginOdCOpOjbLSC2G1bqv47I92NJxNm3MDkmQ29qDDvAb-OyZpJXk_v53OqxyfoSGfAYVj3NZ2idn6Qfw",
+  process.env.VAPID_PRIVATE_KEY || "hpsJLLm51DfAMqGVIOtgBnCUU4OKyZK96Tme0KFJSNY"
+);
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -135,10 +143,44 @@ const TradeCardSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+// Push Subscription Schema
+const PushSubscriptionSchema = new mongoose.Schema({
+  endpoint: { type: String, required: true, unique: true },
+  keys: {
+    p256dh: { type: String, required: true },
+    auth: { type: String, required: true },
+  },
+  createdAt: { type: Date, default: Date.now },
+});
+
 // Models
 const Complaint = mongoose.model("Complaint", ComplaintSchema);
 const ClientConsent = mongoose.model("ClientConsent", ClientConsentSchema);
 const TradeCard = mongoose.model("TradeCard", TradeCardSchema);
+const PushSubscription = mongoose.model("PushSubscription", PushSubscriptionSchema);
+
+// ── Push helper — sends to all stored subscribers ──────────────────────────
+async function sendPushToAll(payload) {
+  const subs = await PushSubscription.find();
+  const results = await Promise.allSettled(
+    subs.map((sub) =>
+      webpush
+        .sendNotification(
+          { endpoint: sub.endpoint, keys: { p256dh: sub.keys.p256dh, auth: sub.keys.auth } },
+          JSON.stringify(payload)
+        )
+        .catch(async (err) => {
+          // 404/410 = subscription is no longer valid — remove it
+          if (err.statusCode === 404 || err.statusCode === 410) {
+            await PushSubscription.deleteOne({ endpoint: sub.endpoint });
+          }
+          throw err;
+        })
+    )
+  );
+  const failed = results.filter((r) => r.status === "rejected").length;
+  console.log(`Push sent: ${results.length - failed} ok, ${failed} failed`);
+}
 
 // Initial Data Seeding
 const seedDatabase = async () => {
@@ -406,10 +448,44 @@ app.delete("/api/client-consent", async (req, res) => {
   }
 });
 
+// ── Push Subscription Endpoints ────────────────────────────────────────────
+app.post("/api/push/subscribe", async (req, res) => {
+  const { endpoint, keys } = req.body;
+  if (!endpoint || !keys?.p256dh || !keys?.auth) {
+    return res.status(400).json({ error: "Invalid subscription object" });
+  }
+  try {
+    await PushSubscription.findOneAndUpdate(
+      { endpoint },
+      { endpoint, keys },
+      { upsert: true, new: true }
+    );
+    res.status(201).json({ message: "Subscribed successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete("/api/push/subscribe", async (req, res) => {
+  const { endpoint } = req.body;
+  if (!endpoint) return res.status(400).json({ error: "endpoint required" });
+  try {
+    await PushSubscription.deleteOne({ endpoint });
+    res.json({ message: "Unsubscribed" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
 // API Endpoints for Trade Cards
 app.get("/api/trade-cards", async (req, res) => {
   try {
-    const cards = await TradeCard.find().sort({ createdAt: -1 });
+    const { status, segment } = req.query;
+    const filter = {};
+    if (status) filter.status = status;
+    if (segment) filter.segment = segment;
+    const cards = await TradeCard.find(filter).sort({ createdAt: -1 });
     res.json(cards);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -431,6 +507,14 @@ app.post("/api/trade-cards", async (req, res) => {
     const card = new TradeCard(req.body);
     await card.save();
     res.status(201).json(card);
+
+    // Fire push notification — don't await to avoid blocking the response
+    sendPushToAll({
+      title: "New Trade Alert! 🚀",
+      body: `${card.name} — ${card.tag || card.segment}. Check it out now!`,
+      tag: `new-trade-${card._id}`,
+      url: "/trade-recommendations",
+    }).catch(console.error);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -443,6 +527,14 @@ app.put("/api/trade-cards/:id", async (req, res) => {
     });
     if (!card) return res.status(404).json({ message: "Trade card not found" });
     res.json(card);
+
+    // Fire push notification for update
+    sendPushToAll({
+      title: "Trade Update! 📈",
+      body: `${card.name} has been updated — new data available.`,
+      tag: `update-trade-${card._id}`,
+      url: "/trade-recommendations",
+    }).catch(console.error);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
