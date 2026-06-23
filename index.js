@@ -37,7 +37,8 @@ const ALLOWED_ORIGINS = [
   // Production web frontend
   "https://krishnapathak.com",
   "https://www.krishnapathak.com",
-  "localhost:8000",
+  "http://localhost:8000",
+  'https://weath-fino-eight.vercel.app',
   "https://wealthfino-info.vercel.app",
   // Allow any extra origin set via env (e.g. on Vercel preview deployments)
   ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),

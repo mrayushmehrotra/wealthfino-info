@@ -6,7 +6,7 @@ import { Platform } from 'react-native';
 // use the Vercel deployment as the fallback for real devices.
 export const API_BASE_URL =
   Platform.OS === 'web'
-    ? 'http://localhost:5000'           // Expo web renderer → Express dev server
+    ? 'https://wealthfino-info.vercel.app'           // Expo web renderer → Express dev server
     : 'https://wealthfino-info.vercel.app'; // Real iOS/Android device → production
 
 const api = axios.create({
