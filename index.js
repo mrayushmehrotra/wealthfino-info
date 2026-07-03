@@ -153,11 +153,18 @@ const PushSubscriptionSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
+const ContactSchema = new mongoose.Schema({
+  phone: String,
+  whatsapp: String,
+  email: String,
+});
+
 // Models
 const Complaint = mongoose.model("Complaint", ComplaintSchema);
 const ClientConsent = mongoose.model("ClientConsent", ClientConsentSchema);
 const TradeCard = mongoose.model("TradeCard", TradeCardSchema);
 const PushSubscription = mongoose.model("PushSubscription", PushSubscriptionSchema);
+const Contact = mongoose.model("Contact", ContactSchema);
 
 // ── Push helper — sends to all stored subscribers ──────────────────────────
 async function sendPushToAll(payload) {
@@ -443,6 +450,49 @@ app.delete("/api/client-consent", async (req, res) => {
   try {
     await ClientConsent.deleteMany({});
     res.json({ message: "Client consent data cleared." });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// API Endpoints for Contact
+app.get("/api/contact", async (req, res) => {
+  try {
+    const data = await Contact.findOne();
+    if (!data) return res.status(404).json({ message: "No contact data found" });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/contact", async (req, res) => {
+  try {
+    await Contact.deleteMany({});
+    const newContact = new Contact(req.body);
+    await newContact.save();
+    res.status(201).json(newContact);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.put("/api/contact", async (req, res) => {
+  try {
+    const updated = await Contact.findOneAndUpdate({}, req.body, {
+      new: true,
+      upsert: true,
+    });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.delete("/api/contact", async (req, res) => {
+  try {
+    await Contact.deleteMany({});
+    res.json({ message: "Contact data cleared." });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

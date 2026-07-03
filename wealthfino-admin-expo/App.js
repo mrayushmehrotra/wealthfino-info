@@ -10,6 +10,7 @@ import Toast from 'react-native-toast-message';
 
 import ComplaintsScreen from './src/screens/ComplaintsScreen';
 import ConsentScreen from './src/screens/ConsentScreen';
+import ContactScreen from './src/screens/ContactScreen';
 import TradeCardsScreen from './src/screens/TradeCardsScreen';
 import { Colors } from './src/theme/colors';
 
@@ -142,6 +143,16 @@ export default function App() {
                   tabBarLabel: 'Client Consent',
                   tabBarIcon: ({ focused }) => (
                     <TabIcon label="CC" focused={focused} />
+                  ),
+                }}
+              />
+              <Tab.Screen
+                name="Contact"
+                component={ContactScreen}
+                options={{
+                  tabBarLabel: 'Contact',
+                  tabBarIcon: ({ focused }) => (
+                    <TabIcon label="CT" focused={focused} />
                   ),
                 }}
               />

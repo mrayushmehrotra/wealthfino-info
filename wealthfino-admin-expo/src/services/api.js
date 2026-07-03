@@ -60,4 +60,15 @@ export const deleteTradeCard = async (id) => {
   return data;
 };
 
+// ─── Contact ───────────────────────────────────────────────
+export const fetchContact = async () => {
+  const { data } = await api.get('/api/contact');
+  return data;
+};
+
+export const updateContact = async (payload) => {
+  const { data } = await api.put('/api/contact', payload);
+  return data;
+};
+
 export default api;
