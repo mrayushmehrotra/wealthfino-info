@@ -4,8 +4,10 @@ const webpush = require("web-push");
 // VAPID keys — set these in your .env file
 webpush.setVapidDetails(
   "mailto:support@wealthfino.com",
-  process.env.VAPID_PUBLIC_KEY || "BATrIjfginOdCOpOjbLSC2G1bqv47I92NJxNm3MDkmQ29qDDvAb-OyZpJXk_v53OqxyfoSGfAYVj3NZ2idn6Qfw",
-  process.env.VAPID_PRIVATE_KEY || "hpsJLLm51DfAMqGVIOtgBnCUU4OKyZK96Tme0KFJSNY"
+  process.env.VAPID_PUBLIC_KEY ||
+    "BATrIjfginOdCOpOjbLSC2G1bqv47I92NJxNm3MDkmQ29qDDvAb-OyZpJXk_v53OqxyfoSGfAYVj3NZ2idn6Qfw",
+  process.env.VAPID_PRIVATE_KEY ||
+    "hpsJLLm51DfAMqGVIOtgBnCUU4OKyZK96Tme0KFJSNY",
 );
 const express = require("express");
 const cors = require("cors");
@@ -46,7 +48,9 @@ const ALLOWED_ORIGINS = [
   "https://krishnapathak.com",
   "https://www.krishnapathak.com",
   "http://localhost:8000",
-  'https://weath-fino-eight.vercel.app',
+  "https://weath-fino-eight.vercel.app",
+  "https://stoxfinder.com/",
+  "http://stoxfinder.com/",
   "https://wealthfino-info.vercel.app",
   // Allow any extra origin set via env (e.g. on Vercel preview deployments)
   ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
@@ -124,25 +128,6 @@ const ClientConsentSchema = new mongoose.Schema({
   sections: [{ title: String, content: String }],
 });
 
-const TradeCardSchema = new mongoose.Schema(
-  {
-    badge: String,
-    tag: String,
-    name: String,
-    logo: String,
-    date: String,
-    dateEnd: String,
-    entry: String,
-    sl: String,
-    exit: String,
-    target: String,
-    updates: [String],
-    segment: { type: String, default: "Index Options" },
-    status: { type: String, default: "Active" },
-  },
-  { timestamps: true },
-);
-
 // Push Subscription Schema
 const PushSubscriptionSchema = new mongoose.Schema({
   endpoint: { type: String, required: true, unique: true },
@@ -159,12 +144,23 @@ const ContactSchema = new mongoose.Schema({
   email: String,
 });
 
+const AppVersionSchema = new mongoose.Schema({
+  latestVersion: { type: String, required: true },
+  minVersion: { type: String, required: true },
+  downloadUrl: String,
+  releaseNotes: String,
+  isRequired: { type: Boolean, default: false },
+});
+
 // Models
 const Complaint = mongoose.model("Complaint", ComplaintSchema);
 const ClientConsent = mongoose.model("ClientConsent", ClientConsentSchema);
-const TradeCard = mongoose.model("TradeCard", TradeCardSchema);
-const PushSubscription = mongoose.model("PushSubscription", PushSubscriptionSchema);
+const PushSubscription = mongoose.model(
+  "PushSubscription",
+  PushSubscriptionSchema,
+);
 const Contact = mongoose.model("Contact", ContactSchema);
+const AppVersion = mongoose.model("AppVersion", AppVersionSchema);
 
 // ── Push helper — sends to all stored subscribers ──────────────────────────
 async function sendPushToAll(payload) {
@@ -173,8 +169,11 @@ async function sendPushToAll(payload) {
     subs.map((sub) =>
       webpush
         .sendNotification(
-          { endpoint: sub.endpoint, keys: { p256dh: sub.keys.p256dh, auth: sub.keys.auth } },
-          JSON.stringify(payload)
+          {
+            endpoint: sub.endpoint,
+            keys: { p256dh: sub.keys.p256dh, auth: sub.keys.auth },
+          },
+          JSON.stringify(payload),
         )
         .catch(async (err) => {
           // 404/410 = subscription is no longer valid — remove it
@@ -182,8 +181,8 @@ async function sendPushToAll(payload) {
             await PushSubscription.deleteOne({ endpoint: sub.endpoint });
           }
           throw err;
-        })
-    )
+        }),
+    ),
   );
   const failed = results.filter((r) => r.status === "rejected").length;
   console.log(`Push sent: ${results.length - failed} ok, ${failed} failed`);
@@ -360,6 +359,18 @@ const seedDatabase = async () => {
         ],
       });
     }
+
+    const versionCount = await AppVersion.countDocuments();
+    if (versionCount === 0) {
+      console.log("Seeding App Version Data...");
+      await AppVersion.create({
+        latestVersion: "1.0.0",
+        minVersion: "1.0.0",
+        downloadUrl: "",
+        releaseNotes: "Initial release",
+        isRequired: false,
+      });
+    }
   } catch (err) {
     console.error("Error seeding database:", err);
   }
@@ -459,7 +470,8 @@ app.delete("/api/client-consent", async (req, res) => {
 app.get("/api/contact", async (req, res) => {
   try {
     const data = await Contact.findOne();
-    if (!data) return res.status(404).json({ message: "No contact data found" });
+    if (!data)
+      return res.status(404).json({ message: "No contact data found" });
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -498,6 +510,50 @@ app.delete("/api/contact", async (req, res) => {
   }
 });
 
+// API Endpoints for App Version
+app.get("/api/app-version", async (req, res) => {
+  try {
+    const data = await AppVersion.findOne();
+    if (!data)
+      return res.status(404).json({ message: "No version data found" });
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post("/api/app-version", async (req, res) => {
+  try {
+    await AppVersion.deleteMany({});
+    const newVersion = new AppVersion(req.body);
+    await newVersion.save();
+    res.status(201).json(newVersion);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.put("/api/app-version", async (req, res) => {
+  try {
+    const updated = await AppVersion.findOneAndUpdate({}, req.body, {
+      new: true,
+      upsert: true,
+    });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.delete("/api/app-version", async (req, res) => {
+  try {
+    await AppVersion.deleteMany({});
+    res.json({ message: "App version data cleared." });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ── Push Subscription Endpoints ────────────────────────────────────────────
 app.post("/api/push/subscribe", async (req, res) => {
   const { endpoint, keys } = req.body;
@@ -508,7 +564,7 @@ app.post("/api/push/subscribe", async (req, res) => {
     await PushSubscription.findOneAndUpdate(
       { endpoint },
       { endpoint, keys },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
     res.status(201).json({ message: "Subscribed successfully" });
   } catch (err) {
@@ -526,80 +582,6 @@ app.delete("/api/push/subscribe", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-
-// API Endpoints for Trade Cards
-app.get("/api/trade-cards", async (req, res) => {
-  try {
-    const { status, segment } = req.query;
-    const filter = {};
-    if (status) filter.status = status;
-    if (segment) filter.segment = segment;
-    const cards = await TradeCard.find(filter).sort({ createdAt: -1 });
-    res.json(cards);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.get("/api/trade-cards/:id", async (req, res) => {
-  try {
-    const card = await TradeCard.findById(req.params.id);
-    if (!card) return res.status(404).json({ message: "Trade card not found" });
-    res.json(card);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.post("/api/trade-cards", async (req, res) => {
-  try {
-    const card = new TradeCard(req.body);
-    await card.save();
-    res.status(201).json(card);
-
-    // Fire push notification — don't await to avoid blocking the response
-    sendPushToAll({
-      title: "New Trade Alert! 🚀",
-      body: `${card.name} — ${card.tag || card.segment}. Check it out now!`,
-      tag: `new-trade-${card._id}`,
-      url: "/trade-recommendations",
-    }).catch(console.error);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-app.put("/api/trade-cards/:id", async (req, res) => {
-  try {
-    const card = await TradeCard.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-    if (!card) return res.status(404).json({ message: "Trade card not found" });
-    res.json(card);
-
-    // Fire push notification for update
-    sendPushToAll({
-      title: "Trade Update! 📈",
-      body: `${card.name} has been updated — new data available.`,
-      tag: `update-trade-${card._id}`,
-      url: "/trade-recommendations",
-    }).catch(console.error);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-app.delete("/api/trade-cards/:id", async (req, res) => {
-  try {
-    const card = await TradeCard.findByIdAndDelete(req.params.id);
-    if (!card) return res.status(404).json({ message: "Trade card not found" });
-    res.json({ message: "Trade card deleted" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
 // Root endpoint for Vercel health check
 app.get("/", (req, res) => {
   res.send("WealthFino Policy API is running securely.");

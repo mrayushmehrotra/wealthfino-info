@@ -39,27 +39,6 @@ export const updateClientConsent = async (payload) => {
   return data;
 };
 
-// ─── Trade Cards ────────────────────────────────────────────
-export const fetchTradeCards = async () => {
-  const { data } = await api.get('/api/trade-cards');
-  return data;
-};
-
-export const createTradeCard = async (payload) => {
-  const { data } = await api.post('/api/trade-cards', payload);
-  return data;
-};
-
-export const updateTradeCard = async ({ id, ...payload }) => {
-  const { data } = await api.put(`/api/trade-cards/${id}`, payload);
-  return data;
-};
-
-export const deleteTradeCard = async (id) => {
-  const { data } = await api.delete(`/api/trade-cards/${id}`);
-  return data;
-};
-
 // ─── Contact ───────────────────────────────────────────────
 export const fetchContact = async () => {
   const { data } = await api.get('/api/contact');
@@ -68,6 +47,12 @@ export const fetchContact = async () => {
 
 export const updateContact = async (payload) => {
   const { data } = await api.put('/api/contact', payload);
+  return data;
+};
+
+// ─── App Version ──────────────────────────────────────────
+export const fetchAppVersion = async () => {
+  const { data } = await api.get('/api/app-version');
   return data;
 };
 

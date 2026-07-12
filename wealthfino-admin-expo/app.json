@@ -3,6 +3,9 @@
     "name": "WealthFino Admin",
     "slug": "wealthfino-admin",
     "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -27,6 +30,9 @@
       "bundler": "metro",
       "output": "single",
       "name": "WealthFino Admin"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d115216b-65b3-4aea-8c8a-8ffd96069def"
     },
     "extra": {
       "eas": {

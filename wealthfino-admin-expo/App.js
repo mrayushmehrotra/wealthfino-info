@@ -11,7 +11,7 @@ import Toast from 'react-native-toast-message';
 import ComplaintsScreen from './src/screens/ComplaintsScreen';
 import ConsentScreen from './src/screens/ConsentScreen';
 import ContactScreen from './src/screens/ContactScreen';
-import TradeCardsScreen from './src/screens/TradeCardsScreen';
+import UpdatePrompt from './src/components/UpdatePrompt';
 import { Colors } from './src/theme/colors';
 
 // Enable native screens on iOS/Android only — web doesn't support react-native-screens
@@ -127,16 +127,6 @@ export default function App() {
                 }}
               />
               <Tab.Screen
-                name="TradeCards"
-                component={TradeCardsScreen}
-                options={{
-                  tabBarLabel: 'Trade Cards',
-                  tabBarIcon: ({ focused }) => (
-                    <TabIcon label="TC" focused={focused} />
-                  ),
-                }}
-              />
-              <Tab.Screen
                 name="Consent"
                 component={ConsentScreen}
                 options={{
@@ -163,6 +153,9 @@ export default function App() {
           <Toast />
 
           <WhatsAppButton />
+
+          {/* In-app update prompt (OTA + binary) */}
+          <UpdatePrompt />
         </QueryClientProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
