@@ -47,6 +47,8 @@ const ALLOWED_ORIGINS = [
   // Production web frontend
   "https://krishnapathak.com",
   "https://www.krishnapathak.com",
+  "https://wealthfino.com",
+  "http://wealthfino.com",
   "http://localhost:8000",
   "https://weath-fino-eight.vercel.app",
   "https://stoxfinder.com",
